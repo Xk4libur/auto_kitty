@@ -73,6 +73,17 @@ except PermissionError:
 except Exception as e:
     print(Fore.RED + f"\n- Error moving 'Hack' folder: {e}\n")
 
+# Crear ~/.config/kitty/ antes de mover archivos
+kitty_config_dir = os.path.expanduser("~/.config/kitty/")
+try:
+    os.makedirs(kitty_config_dir, exist_ok=True)
+except PermissionError:
+    print(Fore.RED + "\n- Permission denied while creating ~/.config/kitty/. Try running with sudo.\n")
+    exit(1)
+except Exception as e:
+    print(Fore.RED + f"\n- Error creating ~/.config/kitty/: {e}\n")
+    exit(1)
+
 
 # Move kitty.conf to .config/kitty
 time.sleep(2)
