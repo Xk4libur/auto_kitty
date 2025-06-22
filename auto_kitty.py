@@ -38,5 +38,4 @@ def main():
     run_command(["mv", os.path.expanduser("~/auto_kitty/kitty.conf"), kitty_config_dir], use_sudo=True)
     run_command(["mv", os.path.expanduser("~/auto_kitty/color.ini"), kitty_config_dir], use_sudo=True)
 
-if __name__ == "__main__":
-    main()
+
