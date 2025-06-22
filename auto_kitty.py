@@ -73,15 +73,20 @@ except PermissionError:
 except Exception as e:
     print(Fore.RED + f"\n- Error moving 'Hack' folder: {e}\n")
 
-# Crear ~/.config/kitty/ antes de mover archivos
-kitty_config_dir = os.path.expanduser("~/.config/kitty/")
+# Crear ~/.config/kitty/
+home_config_dir = os.path.expanduser("~/.config/")
+kitty_config_dir = os.path.join(home_config_dir, "kitty")
+
+print(Fore.YELLOW + f"\n[+] Ensuring directory '{kitty_config_dir}' exists...\n")
+time.sleep(2)
 try:
     os.makedirs(kitty_config_dir, exist_ok=True)
+    print(Fore.GREEN + f"\n- Directory '{kitty_config_dir}' created or already exists. :)\n")
 except PermissionError:
-    print(Fore.RED + "\n- Permission denied while creating ~/.config/kitty/. Try running with sudo.\n")
+    print(Fore.RED + f"\n- Permission denied while creating '{kitty_config_dir}'. Try running with sudo.\n")
     exit(1)
 except Exception as e:
-    print(Fore.RED + f"\n- Error creating ~/.config/kitty/: {e}\n")
+    print(Fore.RED + f"\n- Error creating '{kitty_config_dir}': {e}\n")
     exit(1)
 
 # Función para mover archivos a ~/.config/kitty/
@@ -90,7 +95,7 @@ def move_file_to_kitty(file_name):
     dst = os.path.join(kitty_config_dir, file_name)
 
     time.sleep(2)
-    print(Fore.YELLOW + f"\n[+] Moving {file_name} to .config/kitty...\n")
+    print(Fore.YELLOW + f"\n[+] Moving {file_name} to ~/.config/kitty/...\n")
     time.sleep(2)
 
     try:
@@ -110,3 +115,4 @@ def move_file_to_kitty(file_name):
 # Mover kitty.conf y color.ini
 move_file_to_kitty("kitty.conf")
 move_file_to_kitty("color.ini")
+
