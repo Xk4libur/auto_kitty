@@ -39,7 +39,7 @@ else:
     print(Fore.RED + f"\n- {program_name} is not installed. Install it with: sudo apt install kitty\n")
 
 # --- Carpeta de fuentes local ---
-fonts_dir = os.path.expanduser("~/.local/share/fonts/")
+fonts_dir = os.path.expanduser("~/usr/share/fonts/")
 hack_font_dst = os.path.join(fonts_dir, "Hack")
 hack_font_src = os.path.join(os.getcwd(), "Hack")
 
@@ -74,7 +74,7 @@ time.sleep(2)
 os.system("fc-cache -f")
 
 # --- Configuración de kitty ---
-kitty_config_dir = os.path.expanduser("~/.config/kitty/")
+kitty_config_dir = os.path.expanduser("~/$USER/.config/kitty/")
 print(Fore.YELLOW + f"\n[+] Ensuring directory '{kitty_config_dir}' exists...\n")
 time.sleep(2)
 try:
