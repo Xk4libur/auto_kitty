@@ -1,4 +1,4 @@
-#!/usr/python3
+#!/usr/bin/python3
 
 import shutil
 import os 
@@ -84,46 +84,29 @@ except Exception as e:
     print(Fore.RED + f"\n- Error creating ~/.config/kitty/: {e}\n")
     exit(1)
 
+# Función para mover archivos a ~/.config/kitty/
+def move_file_to_kitty(file_name):
+    src = os.path.join(os.getcwd(), file_name)
+    dst = os.path.join(kitty_config_dir, file_name)
 
-# Move kitty.conf to .config/kitty
-time.sleep(2)
-print(Fore.YELLOW + "\n[+] Moving kitty.conf to .config/kitty...\n")
-time.sleep(2)
-kitty_conf_src = os.path.join(os.getcwd(), "kitty.conf")
-kitty_conf_dst = os.path.expanduser("~/.config/kitty/")
-kitty_conf_dst_file = os.path.join(kitty_conf_dst, "kitty.conf")
-try:
-    if os.path.exists(kitty_conf_src):
-        os.makedirs(kitty_conf_dst, exist_ok=True)
-        if not os.path.exists(kitty_conf_dst_file):
-            shutil.move(kitty_conf_src, kitty_conf_dst_file)
-            print(Fore.GREEN + "\n- 'kitty.conf' moved successfully. :)\n")
-        else:
-            print(Fore.YELLOW + "\n- 'kitty.conf' already exists in ~/.config/kitty/.\n")
-    else:
-        print(Fore.RED + "\n- 'kitty.conf' not found in the current directory.\n")
-except PermissionError:
-    print(Fore.RED + "\n- Permission denied. Try running the script with sudo.\n")
-except Exception as e:
-    print(Fore.RED + f"\n- Error moving 'kitty.conf': {e}\n")
+    time.sleep(2)
+    print(Fore.YELLOW + f"\n[+] Moving {file_name} to .config/kitty...\n")
+    time.sleep(2)
 
-# Move color.ini to .config/kitty
-time.sleep(2)
-print(Fore.YELLOW + "\n[+] Moving color.ini to .config/kitty...\n")
-time.sleep(2)
-color_ini_src = os.path.join(os.getcwd(), "color.ini")
-color_ini_dst = os.path.expanduser("~/.config/kitty/")
-try:
-    if os.path.exists(color_ini_src):
-        if not os.path.exists(color_ini_dst):
-            os.makedirs(color_ini_dst, exist_ok=True)
-            shutil.move(color_ini_src, color_ini_dst)
-            print(Fore.GREEN + "\n- 'color.ini' moved successfully. :)\n")
+    try:
+        if os.path.exists(src):
+            if not os.path.exists(dst):
+                shutil.move(src, dst)
+                print(Fore.GREEN + f"\n- '{file_name}' moved successfully. :)\n")
+            else:
+                print(Fore.YELLOW + f"\n- '{file_name}' already exists in ~/.config/kitty/.\n")
         else:
-            print(Fore.YELLOW + "\n- 'color.ini' already exists in ~/.config/kitty/.\n")
-    else:
-        print(Fore.RED + "\n- 'color.ini' not found in the current directory.\n")
-except PermissionError:
-    print(Fore.RED + "\n- Permission denied. Try running the script with sudo.\n")
-except Exception as e:
-    print(Fore.RED + f"\n- Error moving 'color.ini': {e}\n")
+            print(Fore.RED + f"\n- '{file_name}' not found in the current directory.\n")
+    except PermissionError:
+        print(Fore.RED + f"\n- Permission denied. Try running the script with sudo.\n")
+    except Exception as e:
+        print(Fore.RED + f"\n- Error moving '{file_name}': {e}\n")
+
+# Mover kitty.conf y color.ini
+move_file_to_kitty("kitty.conf")
+move_file_to_kitty("color.ini")
