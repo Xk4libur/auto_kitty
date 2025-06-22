@@ -74,3 +74,45 @@ except Exception as e:
     print(Fore.RED + f"\n- Error moving 'Hack' folder: {e}\n")
 
 
+# Move kitty.conf to .config/kitty
+time.sleep(2)
+print(Fore.YELLOW + "\n[+] Moving kitty.conf to .config/kitty...\n")
+time.sleep(2)
+kitty_conf_src = os.path.join(os.getcwd(), "kitty.conf")
+kitty_conf_dst = os.path.expanduser("~/.config/kitty/")
+kitty_conf_dst_file = os.path.join(kitty_conf_dst, "kitty.conf")
+try:
+    if os.path.exists(kitty_conf_src):
+        os.makedirs(kitty_conf_dst, exist_ok=True)
+        if not os.path.exists(kitty_conf_dst_file):
+            shutil.move(kitty_conf_src, kitty_conf_dst_file)
+            print(Fore.GREEN + "\n- 'kitty.conf' moved successfully. :)\n")
+        else:
+            print(Fore.YELLOW + "\n- 'kitty.conf' already exists in ~/.config/kitty/.\n")
+    else:
+        print(Fore.RED + "\n- 'kitty.conf' not found in the current directory.\n")
+except PermissionError:
+    print(Fore.RED + "\n- Permission denied. Try running the script with sudo.\n")
+except Exception as e:
+    print(Fore.RED + f"\n- Error moving 'kitty.conf': {e}\n")
+
+# Move color.ini to .config/kitty
+time.sleep(2)
+print(Fore.YELLOW + "\n[+] Moving color.ini to .config/kitty...\n")
+time.sleep(2)
+color_ini_src = os.path.join(os.getcwd(), "color.ini")
+color_ini_dst = os.path.expanduser("~/.config/kitty/")
+try:
+    if os.path.exists(color_ini_src):
+        if not os.path.exists(color_ini_dst):
+            os.makedirs(color_ini_dst, exist_ok=True)
+            shutil.move(color_ini_src, color_ini_dst)
+            print(Fore.GREEN + "\n- 'color.ini' moved successfully. :)\n")
+        else:
+            print(Fore.YELLOW + "\n- 'color.ini' already exists in ~/.config/kitty/.\n")
+    else:
+        print(Fore.RED + "\n- 'color.ini' not found in the current directory.\n")
+except PermissionError:
+    print(Fore.RED + "\n- Permission denied. Try running the script with sudo.\n")
+except Exception as e:
+    print(Fore.RED + f"\n- Error moving 'color.ini': {e}\n")
