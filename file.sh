@@ -15,12 +15,11 @@ EOF
 kitty_checker() {
     which kitty > /dev/null 2>&1
 
-    if [ $? -eq 0 ]; then
-        echo -e "\nKitty is already installed, please use kitty to do the rest.\n"
+    if [ $? != 0 ]; then
+        echo -e "\nFist of all, install kitty (sudo apt install kitty) and then use it to do the rest.\n"
         exit 1
     else
-        echo -e "\nFist of all, install kitty (sudo apt install kitty) and then I will do the rest.\n"
-        exit 1
+        echo ""
     fi
 }
 
