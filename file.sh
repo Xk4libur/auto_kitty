@@ -16,29 +16,15 @@ kitty_checker() {
     which kitty > /dev/null 2>&1
 
     if [ $? -eq 0 ]; then
-        echo -e "Kitty is already installed"
-    else
-        echo -e "Fist of all, install kitty (sudo apt install kitty) and then I will do the rest."
+        echo -e "\nKitty is already installed, please use kitty to do the rest.\n"
         exit 1
-    fi
-}
-
-
-# Check if zsh is installed
-
-zsh_checker() {
-    which zsh > /dev/null 2>&1
-
-    if [ $? -eq 0 ]; then
-        echo -e "Zsh is already installed"
     else
-        echo -e "You must install zsh"
+        echo -e "\nFist of all, install kitty (sudo apt install kitty) and then I will do the rest.\n"
         exit 1
     fi
 }
 
 kitty_checker
-zsh_checker
 
 # Installing zsh
 echo -e "\nInstalling zsh...\n"
