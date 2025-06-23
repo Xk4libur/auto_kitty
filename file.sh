@@ -97,6 +97,8 @@ move_to_p10k(){
         sudo mv ~/auto_kitty/.p10k-root_new.zsh /root/.p10k.zsh
         echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /home/$USER/.zshrc
         echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /root/.zshrc
+        echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> /home/$USER/.zshrc
+        echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> /root/.zshrc
     }
 }
 
@@ -113,6 +115,7 @@ configure_kitty
 install_powerlevel10k
 install_lsd_bat
 link_zshrc_to_root
+move_to_p10k
 add_aliases
 
 echo -e "\n✅ Instalación y configuración completadas. Reinicia la terminal para aplicar los cambios.\n"
