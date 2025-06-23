@@ -48,6 +48,8 @@ sleep 2
 sudo apt install kitty -y 
 sudo apt install zsh -y 
 
+kitty 
+
 # Move Hack Nerd Fonts
 echo -e "\nInstalling Hack Nerd Fonts...\n"
 sudo mv ~/auto_kitty/Hack /usr/share/fonts/
@@ -68,6 +70,11 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 sudo chsh -s /usr/bin/zsh $USER
 sudo chsh -s /usr/bin/zsh root
+zsh
+sudo su
+cd /root
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 zsh
 
 # Installing lsd and batcat
