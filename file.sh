@@ -118,4 +118,4 @@ link_zshrc_to_root
 move_to_p10k
 add_aliases
 
-echo -e "\n✅ Instalación y configuración completadas. Reinicia la terminal para aplicar los cambios.\n"
+echo -e "\n✅ The installation and configuration are done. Please reboot the terminal to apply the changes.\n"
