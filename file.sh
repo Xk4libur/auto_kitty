@@ -52,8 +52,10 @@ mkdir -p ~/.config/kitty
 sudo mv ~/auto_kitty/kitty.conf ~/.config/kitty/
 sudo mv ~/auto_kitty/color.ini ~/.config/kitty/
 sleep 2
+exit
 
 # Installing powerlevel10k
+kitty
 echo -e "\nInstalling p10k...\n"
 sleep 2
 cd
