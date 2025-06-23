@@ -98,7 +98,7 @@ move_to_p10k(){
         echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /home/$USER/.zshrc
         sudo bash -c 'echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /root/.zshrc'
         echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> /home/$USER/.zshrc
-        echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> /root/.zshrc
+        sudo bash -c 'echo "[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh" >> /root/.zshrc'
     }
 }
 
