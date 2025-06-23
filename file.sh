@@ -64,7 +64,8 @@ sleep 2
 echo -e "\nInstalling p10k...\n"
 sleep 2
 cd
-git clone https://github.com/romkatv/powerlevel10k.git
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 sudo chsh -s /usr/bin/zsh $USER
 sudo chsh -s /usr/bin/zsh root
 zsh
