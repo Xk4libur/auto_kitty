@@ -33,6 +33,7 @@ ensure_using_kitty() {
 install_zsh() {
     echo -e "\n🔧 Instalando Zsh...\n"
     sudo apt install -y zsh
+    sudo apt install zsh-syntax-highlighting
 }
 
 install_fonts() {
@@ -88,6 +89,18 @@ add_aliases() {
         echo "alias cat='bat'"
     } >> ~/.zshrc
 }
+
+move_to_p10k(){
+    echo -e "\n Moviendo los p10k...\n"
+    {
+        sudo mv ~/auto_kitty/.p10k-root_new.zsh /home/$USER/.p10k.zsh
+        sudo mv ~/auto_kitty/.p10k-root_new.zsh /root/.p10k.zsh
+        echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /home/$USER/.zshrc
+        echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /root/.zshrc
+    }
+}
+
+
 
 # -------------------- EJECUCIÓN --------------------
 
