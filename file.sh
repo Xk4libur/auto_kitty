@@ -46,8 +46,8 @@ install_fonts() {
 configure_kitty() {
     echo -e "\n⚙️  Configurando Kitty...\n"
     mkdir -p ~/.config/kitty
-    mv -f ~/auto_kitty/kitty.conf ~/.config/kitty/
-    mv -f ~/auto_kitty/color.ini ~/.config/kitty/
+   sudo mv -f ~/auto_kitty/kitty.conf ~/.config/kitty/
+   sudo mv -f ~/auto_kitty/color.ini ~/.config/kitty/
 }
 
 install_powerlevel10k() {
