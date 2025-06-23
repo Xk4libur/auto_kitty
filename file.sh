@@ -65,6 +65,8 @@ echo -e "\nInstalling p10k...\n"
 sleep 2
 cd
 git clone https://github.com/romkatv/powerlevel10k.git
+sudo chsh -s /usr/bin/zsh $USER
+sudo chsh -s /usr/bin/zsh root
 zsh
 
 # Installing lsd and batcat
