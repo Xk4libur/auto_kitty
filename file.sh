@@ -45,7 +45,8 @@ kitty_checker() {
 # Installing zsh
 echo -e "\nInstalling zsh...\n"
 sleep 2
-sudo apt install kitty zsh
+sudo apt install kitty -y 
+sudo apt install zsh -y 
 
 # Move Hack Nerd Fonts
 echo -e "\nInstalling Hack Nerd Fonts...\n"
@@ -59,17 +60,17 @@ sudo mv ~/auto_kitty/kitty.conf ~/.config/kitty/
 sudo mv ~/auto_kitty/color.ini ~/.config/kitty/
 sleep 2
 
-# Installing lsd and batcat
-echo -e "\nInstalling lsd and batcat...\n"
-sleep 2
-sudo dpkg -i bat.deb lsd.deb
-
 # Installing powerlevel10k
 echo -e "\nInstalling p10k...\n"
 sleep 2
 cd
 git clone https://github.com/romkatv/powerlevel10k.git
 zsh
+
+# Installing lsd and batcat
+echo -e "\nInstalling lsd and batcat...\n"
+sleep 2
+sudo dpkg -i bat.deb lsd.deb
 
 # Include batcat and lsd
 echo "alias ls='lsd -l' > ~/home/$USER/.zshrc"
