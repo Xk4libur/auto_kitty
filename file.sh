@@ -23,7 +23,18 @@ kitty_checker() {
     fi
 }
 
+use_kitty(){
+    if [ -n "$KITTY_WINDOW_ID" ]; then 
+        echo -e "\nYou are using a Kitty terminal\n"
+    else 
+        echo -e "\nUse a Kitty terminal to do the rest\n"
+        exit 1
+    fi
+}
+
 kitty_checker
+use_kitty
+
 
 # Installing zsh
 echo -e "\nInstalling zsh...\n"
