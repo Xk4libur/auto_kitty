@@ -18,15 +18,10 @@ kitty_checker() {
     if [ $? -eq 0 ]; then
         echo -e "Kitty is already installed"
     else
-        echo -e "You must install kitty"
+        echo -e "Fist of all, install kitty and then I will do the rest."
         exit 1
     fi
 }
-
-# Installing kitty
-
-echo -e "\nInstalling kitty...\n"
-sleep 2
 
 
 # Check if zsh is installed
@@ -45,10 +40,7 @@ kitty_checker() {
 # Installing zsh
 echo -e "\nInstalling zsh...\n"
 sleep 2
-sudo apt install kitty -y 
 sudo apt install zsh -y 
-
-kitty 
 
 # Move Hack Nerd Fonts
 echo -e "\nInstalling Hack Nerd Fonts...\n"
