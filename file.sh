@@ -52,10 +52,8 @@ mkdir -p ~/.config/kitty
 sudo mv ~/auto_kitty/kitty.conf ~/.config/kitty/
 sudo mv ~/auto_kitty/color.ini ~/.config/kitty/
 sleep 2
-kitty sh -c 'kitty @ close-window'
 
 # Installing powerlevel10k
-kitty
 echo -e "\nInstalling p10k...\n"
 sleep 2
 cd
@@ -63,18 +61,22 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 sudo chsh -s /usr/bin/zsh $USER
 sudo chsh -s /usr/bin/zsh root
-zsh
-sudo su
+
+# Configurar Powerlevel10k para root
+sudo bash -c '
 cd /root
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-zsh
+echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >> ~/.zshrc'
 
 # Installing lsd and batcat
 echo -e "\nInstalling lsd and batcat...\n"
 sleep 2
 sudo dpkg -i bat.deb lsd.deb
 
+# Symbolic link
+sudo rm -r /root/.zshrc
+sudo ln -s /home/$USER/.zshrc /root/.zshrc
+
 # Include batcat and lsd
-echo "alias ls='lsd -l' > ~/home/$USER/.zshrc"
-echo "alias cat='bat' > ~/home/$USER/.zshrc"
+echo "alias ls='lsd -l' > /home/$USER/.zshrc"
+echo "alias cat='bat' > /home/$USER/.zshrc"
