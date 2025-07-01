@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 print_banner() {
     cat << "EOF"
@@ -16,93 +16,111 @@ EOF
 
 check_kitty_installed() {
     if ! command -v kitty >/dev/null 2>&1; then
-        echo -e "\n❌ Kitty is not installed. Ejecuta:\n\n Please install kitty with 'sudo apt install kitty'\n\ny and then execute this script from Kitty.\n"
+        echo -e "\n❌ Kitty no está instalado. Ejecuta:\n\n  sudo apt install kitty\n"
         exit 1
     fi
 }
 
 ensure_using_kitty() {
-    if [ -z "$KITTY_WINDOW_ID" ]; then
-        echo -e "\n❌ Please execute this script from an Kitty terminal\n"
+    if [ -z "${KITTY_WINDOW_ID:-}" ]; then
+        echo -e "\n❌ Ejecuta este script desde una terminal Kitty\n"
         exit 1
     else
-        echo -e "\n✅ You have Kitty, fine.\n"
+        echo -e "\n✅ Terminal Kitty detectada.\n"
     fi
 }
 
 install_zsh() {
-    echo -e "\n🔧 Installing Zsh...\n"
-    sudo apt install -y zsh
-    sudo apt install zsh-syntax-highlighting
+    echo -e "\n🔧 Instalando Zsh...\n"
+    sudo apt update
+    sudo apt install -y zsh zsh-syntax-highlighting
 }
 
 install_fonts() {
-    echo -e "\n🔤 Installing the Hack Nerd Fonts...\n"
+    echo -e "\n🔤 Instalando las Hack Nerd Fonts...\n"
     sudo mkdir -p /usr/share/fonts/Hack
-    sudo mv -f ~/auto_kitty/Hack/* /usr/share/fonts/Hack/
-    fc-cache -fv
+    if compgen -G "$HOME/auto_kitty/Hack/*" > /dev/null; then
+        sudo cp -f "$HOME/auto_kitty/Hack/"* /usr/share/fonts/Hack/
+        fc-cache -fv
+    else
+        echo -e "\n❌ No se encontraron fuentes en ~/auto_kitty/Hack/\n"
+        exit 1
+    fi
 }
 
 configure_kitty() {
-    echo -e "\n⚙️  Configuring Kitty...\n"
-    mkdir -p ~/.config/kitty
-   sudo mv -f ~/auto_kitty/kitty.conf ~/.config/kitty/
-   sudo mv -f ~/auto_kitty/color.ini ~/.config/kitty/
+    echo -e "\n⚙️  Configurando Kitty...\n"
+    mkdir -p "$HOME/.config/kitty"
+    cp -f "$HOME/auto_kitty/kitty.conf" "$HOME/.config/kitty/"
+    cp -f "$HOME/auto_kitty/color.ini" "$HOME/.config/kitty/"
 }
 
 install_powerlevel10k() {
-    echo -e "\n🌟 Installing Powerlevel10k...\n"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+    echo -e "\n🌟 Instalando Powerlevel10k...\n"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME/powerlevel10k" 2>/dev/null || true
 
-    if ! grep -q "powerlevel10k.zsh-theme" ~/.zshrc 2>/dev/null; then
-        echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+    if ! grep -q "powerlevel10k.zsh-theme" "$HOME/.zshrc" 2>/dev/null; then
+        echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME/.zshrc"
     fi
 
-    sudo chsh -s /usr/bin/zsh "$USER"
-    sudo chsh -s /usr/bin/zsh root
+    sudo chsh -s /usr/bin/zsh "$USER" || true
+    sudo chsh -s /usr/bin/zsh root || true
 
-    echo -e "\n🔧 Configuring Powerlevel10k for root...\n"
+    echo -e "\n🔧 Configurando Powerlevel10k para root...\n"
     sudo bash -c '
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/powerlevel10k
-        echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >> /root/.zshrc
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/powerlevel10k 2>/dev/null || true
+        if ! grep -q "powerlevel10k.zsh-theme" /root/.zshrc 2>/dev/null; then
+            echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >> /root/.zshrc
+        fi
     '
 }
 
 install_lsd_bat() {
-    echo -e "\n📦 Installing lsd and bat...\n"
-    sudo dpkg -i bat.deb lsd.deb || {
-        echo -e "\n❌ Error al instalar los paquetes .deb. Verifica que existan y estén correctos.\n"
+    echo -e "\n📦 Instalando lsd y bat...\n"
+    if [[ -f bat.deb && -f lsd.deb ]]; then
+        sudo dpkg -i bat.deb lsd.deb || {
+            echo -e "\n❌ Error al instalar los paquetes .deb. Verifica que existan y estén correctos.\n"
+            exit 1
+        }
+    else
+        echo -e "\n❌ bat.deb o lsd.deb no encontrados en el directorio actual.\n"
         exit 1
-    }
+    fi
 }
 
 link_zshrc_to_root() {
-    echo -e "\n🔗 Making a link symbolic for .zshrc...\n"
+    echo -e "\n🔗 Enlazando .zshrc de root con el del usuario...\n"
     sudo rm -f /root/.zshrc
-    sudo ln -s /home/"$USER"/.zshrc /root/.zshrc
+    sudo ln -s "/home/$USER/.zshrc" /root/.zshrc
 }
 
 add_aliases() {
-    echo -e "\n➕ Adding alias to ~/.zshrc...\n"
-    {
-        echo "alias ls='lsd -l'"
-        echo "alias cat='bat'"
-    } >> ~/.zshrc
+    echo -e "\n➕ Agregando alias a ~/.zshrc...\n"
+    grep -qxF "alias ls='lsd -l'" "$HOME/.zshrc" || echo "alias ls='lsd -l'" >> "$HOME/.zshrc"
+    grep -qxF "alias cat='bat'" "$HOME/.zshrc" || echo "alias cat='bat'" >> "$HOME/.zshrc"
 }
 
 move_to_p10k(){
-    echo -e "\n Moving the p10k...\n"
-    {
-        sudo cp ~/auto_kitty/.p10k-root_new.zsh /home/$USER/.p10k.zsh
-        sudo cp ~/auto_kitty/.p10k-root_new.zsh /root/.p10k.zsh
-        echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /home/$USER/.zshrc
+    echo -e "\n📁 Moviendo configuración de p10k...\n"
+    sudo cp "$HOME/auto_kitty/.p10k-root_new.zsh" "$HOME/.p10k.zsh"
+    sudo cp "$HOME/auto_kitty/.p10k-root_new.zsh" /root/.p10k.zsh
+
+    if ! grep -q "zsh-syntax-highlighting.zsh" "$HOME/.zshrc"; then
+        echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "$HOME/.zshrc"
+    fi
+
+    if ! sudo grep -q "zsh-syntax-highlighting.zsh" /root/.zshrc; then
         sudo bash -c 'echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> /root/.zshrc'
-        echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> /home/$USER/.zshrc
+    fi
+
+    if ! grep -q '\.p10k\.zsh' "$HOME/.zshrc"; then
+        echo '[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh' >> "$HOME/.zshrc"
+    fi
+
+    if ! sudo grep -q '\.p10k\.zsh' /root/.zshrc; then
         sudo bash -c 'echo "[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh" >> /root/.zshrc'
-    }
+    fi
 }
-
-
 
 # -------------------- EJECUCIÓN --------------------
 
@@ -118,4 +136,5 @@ link_zshrc_to_root
 move_to_p10k
 add_aliases
 
-echo -e "\n✅ The installation and configuration are done. Please reboot the terminal to apply the changes.\n"
+echo -e "\n✅ Instalación y configuración completadas. Reinicia la terminal para aplicar los cambios.\n"
+
