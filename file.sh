@@ -39,11 +39,11 @@ install_zsh() {
 install_fonts() {
     echo -e "\n🔤 Instalando las Hack Nerd Fonts...\n"
     sudo mkdir -p /usr/share/fonts/Hack
-    if compgen -G "$HOME/auto_kitty/Hack/*" > /dev/null; then
-        sudo cp -f "$HOME/auto_kitty/Hack/"* /usr/share/fonts/Hack/
+    if compgen -G "$HOME/auto_kitty4kali/Hack/*" > /dev/null; then
+        sudo cp -f "$HOME/auto_kitty4kali/Hack/"* /usr/share/fonts/Hack/
         fc-cache -fv
     else
-        echo -e "\n❌ No se encontraron fuentes en ~/auto_kitty/Hack/\n"
+        echo -e "\n❌ No se encontraron fuentes en ~/auto_kitty4kali/Hack/\n"
         exit 1
     fi
 }
@@ -51,8 +51,8 @@ install_fonts() {
 configure_kitty() {
     echo -e "\n⚙️  Configurando Kitty...\n"
     mkdir -p "$HOME/.config/kitty"
-    cp -f "$HOME/auto_kitty/kitty.conf" "$HOME/.config/kitty/"
-    cp -f "$HOME/auto_kitty/color.ini" "$HOME/.config/kitty/"
+    cp -f "$HOME/auto_kitty4kali/kitty.conf" "$HOME/.config/kitty/"
+    cp -f "$HOME/auto_kitty4kali/color.ini" "$HOME/.config/kitty/"
 }
 
 install_powerlevel10k() {
@@ -102,8 +102,8 @@ add_aliases() {
 
 move_to_p10k(){
     echo -e "\n📁 Moviendo configuración de p10k...\n"
-    sudo cp "$HOME/auto_kitty/.p10k-root_new.zsh" "$HOME/.p10k.zsh"
-    sudo cp "$HOME/auto_kitty/.p10k-root_new.zsh" /root/.p10k.zsh
+    sudo cp "$HOME/auto_kitty4kali/.p10k-root_new.zsh" "$HOME/.p10k.zsh"
+    sudo cp "$HOME/auto_kitty4kali/.p10k-root_new.zsh" /root/.p10k.zsh
 
     if ! grep -q "zsh-syntax-highlighting.zsh" "$HOME/.zshrc"; then
         echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "$HOME/.zshrc"
